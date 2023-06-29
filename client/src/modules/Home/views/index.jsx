@@ -1,8 +1,7 @@
 import React from 'react'
 import Tabs from '../components/Tabs'
 import Hero from '../components/Hero'
-// import { TourSection ,ExperienceSection} from '../components/Section'
-// import Banner from '../components/Banner'
+import Stocks from '../components/Section'
 
 
 
@@ -11,9 +10,7 @@ export default function HomeView() {
     <div className='w-full'>
          <Tabs />
          <Hero />
-         {/* <TourSection />
-         <ExperienceSection />
-         <Banner /> */}
+         <Stocks />
        
     </div>
   )

@@ -1,5 +1,7 @@
 import axios from "axios";
-
+import { collection, setDoc,doc,getDoc,addDoc} from  'firebase/firestore'
+import { db } from '../../../firebase'
+import toast, { Toaster } from 'react-hot-toast';
 
 export const zKyc = {
     upload: async function (file) {
@@ -52,5 +54,14 @@ export const zKyc = {
          }
  
      },
+     addProposal: async function (data) {
+      try{
+          const docRef = await addDoc(collection(db, "proposals"), {data});
+          toast.success("Proposal added to cohort")
+           
+      }catch(e){
+          console.log(e)
+      }
+  }
    
   }

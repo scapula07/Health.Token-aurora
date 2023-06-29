@@ -10,7 +10,7 @@ import contractAbi from "../../../../ABI/orderbookMarket.json"
 import Modal from '../../../../components/Modal'
 import toast, { Toaster } from 'react-hot-toast';
 import { useOutletContext } from "react-router-dom";
-
+import { ScaleLoader } from 'react-spinners'
 
 const contractAddress="0xc836f2B5921E31bF73D61850d33d56bB9045E67F"
 
@@ -25,8 +25,10 @@ export default function Trading() {
     const [orderId,setOrderId] =useState()
     const [trigger,setTrigger]=useState(false)
     const [loading,setLoading]=useState(false)
-
+     
     const [orders,setOrder] =useState()
+    const [sellOrders,setSales]=useState([])
+    const [buyOrders,setPurchase]=useState([])
 
     const sleep = (milliseconds) => {
         return new Promise(resolve => setTimeout(resolve, milliseconds))
@@ -41,7 +43,11 @@ export default function Trading() {
             try{
                 const txs = await orderBookContract.methods.getTotalOrder().call({})
                 const result = txs.filter(tx=> tx.cohort===cohort?.address);
+                const buys = result?.filter(order=> order.orderType=="buy");
+                const sales = result?.filter(order=> order.orderType=="sell");
                 // console.log(result,"ccco")
+                setPurchase(buys)
+                setSales(sales)
                 setOrder(result)
                 }catch(e){
                     console.log(e)
@@ -55,6 +61,7 @@ export default function Trading() {
         setLoading(true)
         try{
             const _amount=web3.utils.toWei(amount.toString(),'ether')
+            console.log(_amount)
             const txs = await orderBookContract.methods.createBuyOrder(cohort?.address,_amount).send({from:account,value:_amount})
              console.log(txs)
              txs?.blockHash?.length >0 && toast.success("Buy order placed")
@@ -79,27 +86,34 @@ export default function Trading() {
             }
 
       }
-      const acceptBuyOrder=async()=>{
+      const acceptBuyOrder=async(orderId)=>{
         setLoading(true)
         try{
-           const txs1 = await orderBookContract.methods.acceptBuyOrder(orderId,cohort?.address,tokenId).send({from:account})
+           const txs1 = await orderBookContract.methods.acceptBuyOrder(Number(orderId.toString()),cohort?.address,tokenId).send({from:account})
            console.log(txs1)
            sleep(30000)
-           const txs2 = await orderBookContract.methods.completeOrder(orderId).send({from:account})
+           const txs2 = await orderBookContract.methods.completeOrder(Number(orderId.toString())).send({from:account})
            console.log(txs1)
+           setLoading(false)
+           toast.success("Order accepted")
           }catch(e){
               console.log(e)
           }
 
      }
-   const acceptSellOrder=async()=>{
+   const acceptSellOrder=async(orderId)=>{
+    console.log(Number(orderId.toString()),"idd")
+    setLoading(true)
         try{
-           const txs1 = await orderBookContract.methods.acceptOrder(orderId).send({from:account})
+           const txs1 = await orderBookContract.methods.acceptSellOrder(Number(orderId.toString())).send({from:account})
            console.log(txs1)
            sleep(30000)
-           const txs2 = await orderBookContract.methods.completeOrder(orderId).send({from:account})
+           const txs2 = await orderBookContract.methods.completeOrder(Number(orderId.toString())).send({from:account})
            console.log(txs1)
+           setLoading(false)
+           toast.success("Order accepted")
           }catch(e){
+            setLoading(false)
               console.log(e)
           }
 
@@ -140,6 +154,9 @@ export default function Trading() {
                  trigger={trigger}
                  setTrigger={setTrigger}
                  cohort={cohort}
+                 sellOrders={sellOrders}
+                 buyOrders={buyOrders}
+                 loading={loading}
                 />
             </div>
            

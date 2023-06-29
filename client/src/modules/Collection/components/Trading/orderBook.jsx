@@ -5,27 +5,18 @@ import { ScaleLoader } from 'react-spinners'
 import { useEffect } from 'react'
 import Web3 from "web3";
 
-export default function OrderBook({orders,acceptBuyOrder,acceptSellOrder,trigger,setTrigger, cohort}) {
+export default function OrderBook({sellOrders,buyOrders,acceptBuyOrder,acceptSellOrder,trigger,setTrigger, cohort,loading}) {
     const web3 = new Web3(window.ethereum)
     const [orderType,setType]=useState("buy")
     const [order,setOrder]=useState()
-    const [sellOrders,setSales]=useState([])
-    const [buyOrders,setPurchase]=useState([])
+
     const takeOrder=(type,order)=>{
         
         setType()
         setTrigger(true) 
         setOrder(order)
      }
-     useEffect(()=>{
-        const buys = orders?.filter(order=> order.orderType=="buy");
-        const sales = orders?.filter(order=> order.orderType=="sell");
-        console.log(sales)
-        setPurchase(buys)
-        setSales(sales)
 
-     },[])
-     console.log(sellOrders)
   return (
     <>
     <div className=''>
@@ -40,7 +31,7 @@ export default function OrderBook({orders,acceptBuyOrder,acceptSellOrder,trigger
              </div>
 
              {sellOrders?.map((sellOrder)=>{
-                console.log(sellOrder)
+               //  console.log(sellOrder,"order")
                 const amount =web3.utils.fromWei(sellOrder?.amount?.toString(), "ether")
                
                 
@@ -64,7 +55,7 @@ export default function OrderBook({orders,acceptBuyOrder,acceptSellOrder,trigger
                      const amount =web3.utils.fromWei(buyOrder?.amount?.toString(), "ether")
                
                             return(
-                             <div className='flex items-center justify-between text-xs font-semibold text-green-500'
+                             <div className='flex items-center justify-between text-xs font-semibold text-green-500 hover:bg-slate-100 px-2 py-1'
                              onClick={()=>takeOrder("sell",buyOrder)}
                              >
                                 <h5> { cohort?.case + "" + buyOrder?.item?.tokenId?.toString()} </h5>
@@ -96,8 +87,12 @@ export default function OrderBook({orders,acceptBuyOrder,acceptSellOrder,trigger
                      <div className='flex justify-center'>
                         <button 
                          className='bg-green-500 text-white px-6 py-1 rounded-lg'
-                          onClick={acceptBuyOrder}>
-                            Accept Order
+                          onClick={()=>acceptBuyOrder(order?.orderId)}>
+                               {loading?
+                                    <ScaleLoader color='white'/>
+                                    :
+                                       "Accept order"
+                                    }
                             </button>
                            
                      </div>
@@ -105,15 +100,21 @@ export default function OrderBook({orders,acceptBuyOrder,acceptSellOrder,trigger
 
                 </div>
                 :
-                <div className='flex flex-col'>
-                    <div className='text-black'>
-                        {order}
+                <div className='flex flex-col space-y-4 '>
+                    <div className='flex items-center space-x-10 justify-center py-2'>
+                        <h5> { cohort?.case + "" + order?.item?.tokenId?.toString()} </h5>
+                        <h5> { order?.amount?.toString()} </h5>
                      </div>
                     <div className='flex justify-center'>
                     <button 
                         className='bg-green-500 text-white px-6 py-1 rounded-lg'
-                        onClick={acceptSellOrder}>
-                            Accept Order
+                        onClick={()=>acceptSellOrder(order?.orderId)}>
+                               {loading?
+                                    <ScaleLoader color='white'/>
+                                    :
+                                       "Accept order"
+                                    }
+                              
                         </button>
                         
                     </div>

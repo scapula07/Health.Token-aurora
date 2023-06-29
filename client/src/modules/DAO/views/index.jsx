@@ -1,8 +1,10 @@
-import React from 'react'
+import React,{useState} from 'react'
 import {AiOutlineClockCircle} from "react-icons/ai"
 import Proposals from '../components/proposals'
 import Voting from '../components/voting'
+
 export default function DaoView() {
+  const [select,setSelected]=useState()
   return (
     <div className='w-full py-8'>
          <h5 className='text-xl font-semibold'>DAO Governance</h5>
@@ -36,13 +38,17 @@ export default function DaoView() {
 
                      </div>
                         <div className='w-full shadow-lg  '>
-                            <Proposals />
+                            <Proposals 
+                             setSelected={setSelected}
+                            />
 
                         </div>
 
                  </div>
                   <div className=''>
-                    <Voting />
+                    <Voting 
+                      select={select}
+                    />
                    
 
                    </div>

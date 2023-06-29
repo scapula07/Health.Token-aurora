@@ -16,12 +16,12 @@ export const tabs=[
      {
         icon:<RiStockFill/>,
         name:"Stocks",
-        link:"/stocks"
+        link:"/stock/i"
      },
      {
         icon:<BsFillHousesFill/>,
         name:"Data markets",
-        link:"/markets"
+        link:"/market"
       },
       {
         icon:<LuDroplets/>,

@@ -33,7 +33,7 @@ export default function Header() {
     <div className='flex items-center w-full justify-between '>
         <div className='w-1/2'>
            <Link to="/">
-            <h5 className='text-black font-bold text-2xl'>$.
+            <h5 className='text-black font-bold text-2xl'>$
            <pan className="text-slate-900 font-light font-serif">Health</pan>
             </h5>
             </Link>
