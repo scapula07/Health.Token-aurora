@@ -16,8 +16,9 @@ Health.tokens is a DAO based health data sharing,monetization and trading platfo
 
  Our dapp include the following features;
 
-1. Ethereum naming service integration - ENS service
-2. NFT minting -NFTport API
-
-4. NFT marketplace enabling creators to list NFTs and buyers to purchase NFT
-6. Staking pool, each user can stake ONE or V3T on our platform within a staking period and the rewards from this period can be used to purchase NFT from Collection listed on our platform. A governace system is used to determined the choice of nft.
+1. Tokenization portal
+2.  Token Fractionalization portal
+3.  Order booking NFT Marketplace
+4.  Zero-proof knowlege KYC Verification portal
+5.  DAO compliance Validation
+6.  Social platform, for feeds and posts
